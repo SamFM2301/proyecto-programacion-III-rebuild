@@ -10,13 +10,14 @@ public class RegisterController {
 		this.view = new RegisterView(this);
 	}
 	
-	public void onRegister() {
-		System.out.println(view.getGender());
-		
+	public void onRegister() {	
 		if (isValidateFields()) {
 	    	System.out.println("Se registro el usuario");
 	    	view.resetFields();
 	    	view.resetErrorMsg();
+	    	
+	    	new LoginController();
+	    	view.dispose();
 	    }
 	}
 	
@@ -103,9 +104,13 @@ public class RegisterController {
 	
 	private boolean isValidGender() {
 		
-		view.setErrorGender("Eliga una opcion");
+		if (view.getGender() == null) {
+			view.setErrorGender("Eliga una opcion");
+			return false;
+		}
 		
-		return false;
+		view.setErrorGender("");
+		return true;
 	}
 	
 	private boolean isValidPassword() {
@@ -115,6 +120,11 @@ public class RegisterController {
 	        view.setErrorPassword("La contraseña es requerida");
 	        return false;
 	    }
+		
+		if (password.length() < 8) {
+			view.setErrorPassword("La contraseña debe tener al menos 8 caracteres");
+			return false;
+		}
 		
 		view.setErrorPassword(" ");
 		return true;

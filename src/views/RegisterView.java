@@ -9,12 +9,16 @@ import javax.swing.border.EmptyBorder;
 import components.RoundedButton;
 import components.RoundedPasswordField;
 import components.RoundedTextField;
-import controllers.LoginController;
 import controllers.RegisterController;
 import utils.AppColors;
 import utils.AppFonts;
 
 public class RegisterView extends JFrame{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private RegisterController controller;
 	
@@ -51,12 +55,12 @@ public class RegisterView extends JFrame{
 	private void initFrame() {
 		setTitle("Crear cuenta");
         
-        URL iconURL = getClass().getClassLoader().getResource("assets/icons/iniciosesion.png");
+        URL iconURL = getClass().getClassLoader().getResource("assets/img/logo_icono.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
         setIconImage(icon);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(800, 680));
+        setMinimumSize(new Dimension(890, 680));
         setResizable(true);
         setLocationRelativeTo(null);
 	}
@@ -78,14 +82,19 @@ public class RegisterView extends JFrame{
 	    Image image = new ImageIcon(imgURL).getImage();
 
         JPanel panel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
 
-        panel.setPreferredSize(new Dimension(300, 520));
+        panel.setPreferredSize(new Dimension(390, 520));
         return panel;
     }
 	

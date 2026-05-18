@@ -18,6 +18,11 @@ import utils.AppFonts;
 
 public class LoginView extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private LoginController controller;
 	
 	private RoundedTextField txtEmail;
@@ -35,7 +40,7 @@ public class LoginView extends JFrame{
 	private void initFrame() {
 		setTitle("Inicio de sesion");
         
-        URL iconURL = getClass().getClassLoader().getResource("assets/icons/iniciosesion.png");
+        URL iconURL = getClass().getClassLoader().getResource("assets/img/logo_icono.png");
         Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
         setIconImage(icon);
         
@@ -62,7 +67,12 @@ public class LoginView extends JFrame{
 	    Image image = new ImageIcon(imgURL).getImage();
 
         JPanel panel = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);

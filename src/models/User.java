@@ -68,12 +68,12 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
+	
 	public String getPassword() {
-		return password;
+	    return password;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+	    this.password = password;
 	}
 }

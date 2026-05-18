@@ -1,21 +1,32 @@
 package controllers;
 
+import javax.swing.*;
+
+import models.User;
+import repository.LoginRepository;
 import views.LoginView;
-import views.RegisterView;
 
 public class LoginController {
 	private LoginView view;
+	private LoginRepository repository;
 	
 	public LoginController() {
 		this.view = new LoginView(this);
+		this.repository = new LoginRepository();
 	}
 
 	public void onLogin() {
-	    if (isValidateFields()) {
-	    	System.out.println("Se inicio sesion");
-	    	view.resetFields();
-	    	view.resetErrorMsg();
+	    if (!isValidateFields()) return;
+
+	    User user = repository.login(view.getEmail(), view.getPassword());
+
+	    if (user == null) {
+	        view.setErrorPassword("Correo o contraseña incorrectos");
+	        return;
 	    }
+
+	    new HomeController();
+	    view.dispose();
 	}
 	
 	public void onRegister() {

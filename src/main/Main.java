@@ -1,12 +1,15 @@
 package main;
 
+import controllers.HomeController;
 import controllers.LoginController;
-import views.LoginView;
+import controllers.RegisterController;
 
 public class Main {
 
 	public static void main(String[] args) {
-		LoginController controller = new LoginController();
+		//new LoginController();
+		//new RegisterController();
+		new HomeController();
 	}
 
 }
