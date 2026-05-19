@@ -170,7 +170,7 @@ public class SideMenuView extends JPanel{
 
 	    if (isActive) {
 	        item.setOpaque(true);
-	        item.setBackground(AppColors.PANEL);
+	        item.setBackground(AppColors.PANEL2);
 	        item.setBorder(new CompoundBorder(
 	            new MatteBorder(0, 3, 0, 0, AppColors.YELLOW),
 	            new EmptyBorder(12, 22, 12, 15)

@@ -1,23 +1,52 @@
 package controllers;
 
+import javax.swing.JOptionPane;
+
+import models.User;
+import repository.RegisterRepository;
 import views.RegisterView;
 
 public class RegisterController {
 
 	private RegisterView view;
+	private RegisterRepository repository;
 	
 	public RegisterController() {
 		this.view = new RegisterView(this);
+		this.repository = new RegisterRepository();
 	}
 	
 	public void onRegister() {	
 		if (isValidateFields()) {
-	    	System.out.println("Se registro el usuario");
-	    	view.resetFields();
-	    	view.resetErrorMsg();
-	    	
-	    	new LoginController();
-	    	view.dispose();
+			if (repository.emailExists(view.getEmail())) {
+				view.setErrorEmail("El correo ya está registrado");
+				return;
+			}
+			
+			User user = new User();
+			user.setFirstName(view.getName());
+			user.setLastName(view.getLastName());
+			user.setEmail(view.getEmail());
+			user.setDate(view.getDate());
+			user.setGender(view.getGender());
+			user.setPassword(view.getPassword());
+			
+			if (repository.saveUser(user)) {
+				view.resetFields();
+		    	view.resetErrorMsg();
+		    	
+		    	JOptionPane.showMessageDialog(
+	                view,
+	                "Usuario registrado exitosamente.",
+	                "Registro",
+	                JOptionPane.INFORMATION_MESSAGE
+	            );
+		    	
+		    	new LoginController();
+		    	view.dispose();
+			} else {
+				view.setErrorEmail("Error al registrar usuario");
+			}
 	    }
 	}
 	

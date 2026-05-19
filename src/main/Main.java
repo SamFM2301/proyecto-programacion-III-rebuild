@@ -3,6 +3,7 @@ package main;
 import controllers.HomeController;
 import controllers.LoginController;
 import controllers.RegisterController;
+import utils.PasswordUtils;
 
 public class Main {
 

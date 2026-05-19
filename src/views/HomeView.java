@@ -41,7 +41,7 @@ public class HomeView extends JFrame {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        mainPanel = new JPanel(new BorderLayout()); // <-- sin "JPanel" adelante, asigna al campo
+        mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(AppColors.PANEL);
 
         SideMenuController sideMenuController = new SideMenuController(this);

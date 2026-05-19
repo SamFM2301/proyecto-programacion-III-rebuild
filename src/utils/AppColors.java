@@ -7,6 +7,8 @@ public class AppColors {
 	
     public static final Color PANEL = new Color(26,30,44);
     
+    public static final Color PANEL2 = new Color(30, 34, 53);
+    
     public static final Color FIELDS = new Color(75,75,84);
     public static final Color FIELDS_HOVER = new Color(95,95,105);
     
