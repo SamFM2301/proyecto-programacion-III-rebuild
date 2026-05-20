@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import controllers.HomeController;
 import controllers.SideMenuController;
+import controllers.CalenderController;
 import utils.AppColors;
 
 public class HomeView extends JFrame {
@@ -21,6 +22,8 @@ public class HomeView extends JFrame {
 
     public HomeView(HomeController controller) {
         this.controller = controller;
+        this.currentView = new CalenderController().getView();
+        
         initFrame();
         initComponents();
     }
@@ -46,6 +49,7 @@ public class HomeView extends JFrame {
 
         SideMenuController sideMenuController = new SideMenuController(this);
         mainPanel.add(sideMenuController.getView(), BorderLayout.WEST);
+        mainPanel.add(currentView, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
         setVisible(true);

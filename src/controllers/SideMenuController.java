@@ -2,6 +2,7 @@ package controllers;
 
 import javax.swing.JOptionPane;
 
+import views.CalenderView;
 import views.HomeView;
 import views.SideMenuView;
 
@@ -23,15 +24,18 @@ public class SideMenuController {
 
         switch (section) {
             case "mis_citas":
-                // homeView.setCurrentView(new MisCitasView());
+                homeView.setCurrentView(new CalenderController().getView());
                 break;
             case "nueva_cita":
+            	System.out.println("NUEVA CITA");
                 // homeView.setCurrentView(new NuevaCitaView());
                 break;
             case "perfil":
+            	System.out.println("PERFIL");
                 // homeView.setCurrentView(new PerfilView());
                 break;
             case "configuracion":
+            	System.out.println("CONFIGURACION");
                 // homeView.setCurrentView(new ConfiguracionView());
                 break;
         }
