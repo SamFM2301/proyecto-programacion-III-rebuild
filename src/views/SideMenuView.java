@@ -117,7 +117,7 @@ public class SideMenuView extends JPanel{
 	    panel.setMaximumSize(new Dimension(250, 70));
 	    panel.setBorder(new CompoundBorder(
 	        new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
-	        new EmptyBorder(12, 25, 12, 25)
+	        new EmptyBorder(12, 10, 12, 10)
 	    ));
 
 	    JLabel avatar = new JLabel();
