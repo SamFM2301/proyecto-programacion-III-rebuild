@@ -2,8 +2,8 @@ package controllers;
 
 import javax.swing.JOptionPane;
 
-import views.CalenderView;
 import views.HomeView;
+import views.ProfileView;
 import views.SideMenuView;
 
 public class SideMenuController {
@@ -27,32 +27,28 @@ public class SideMenuController {
                 homeView.setCurrentView(new CalenderController().getView());
                 break;
             case "nueva_cita":
-            	System.out.println("NUEVA CITA");
+                System.out.println("NUEVA CITA");
+                homeView.setCurrentView(new CalenderController().getView());
                 // homeView.setCurrentView(new NuevaCitaView());
                 break;
             case "perfil":
-            	System.out.println("PERFIL");
-                // homeView.setCurrentView(new PerfilView());
+                homeView.setCurrentView(new ProfileView(view));
                 break;
-            case "configuracion":
-            	System.out.println("CONFIGURACION");
-                // homeView.setCurrentView(new ConfiguracionView());
-                break;
+           
         }
     }
-    
-    public void logOut() {
-    	int result = JOptionPane.showConfirmDialog(
-		    homeView,
-		    "¿Estás seguro de que deseas cerrar sesión?",
-		    "Confirmar",
-		    JOptionPane.YES_NO_OPTION
-		);
 
-		if (result == JOptionPane.YES_OPTION) {
-		    homeView.dispose();
-		    
-		    new LoginController();
-		}
+    public void logOut() {
+        int result = JOptionPane.showConfirmDialog(
+            homeView,
+            "¿Estás seguro de que deseas cerrar sesión?",
+            "Confirmar",
+            JOptionPane.YES_NO_OPTION
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            homeView.dispose();
+            new LoginController();
+        }
     }
 }

@@ -6,7 +6,11 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -23,19 +27,20 @@ import javax.swing.border.MatteBorder;
 
 import controllers.SideMenuController;
 import utils.AppColors;
+import utils.Session;
 
-public class SideMenuView extends JPanel{
-	
-	/**
-	 *  Este es el menu lateral de la ventana principal
-	 */
-	private static final long serialVersionUID = 1L;
-	private SideMenuController controller;
-	private String activeItem = "mis_citas";
-	
-	public SideMenuView(SideMenuController controller) {
-		this.controller = controller;
-		
+public class SideMenuView extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+    private SideMenuController controller;
+    private String activeItem = "mis_citas";
+
+    private Image profileImage = null;
+    private JLabel avatarLabel;
+
+    public SideMenuView(SideMenuController controller) {
+        this.controller = controller;
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(250, 0));
         setMinimumSize(new Dimension(250, 0));
@@ -46,189 +51,213 @@ public class SideMenuView extends JPanel{
         add(principalSection());
         add(accountSection());
         add(Box.createVerticalGlue());
-        add(profileSection());
+        add(buildProfileSection());
     }
-	
-	private JPanel logoSection() {
-	    JPanel panel = new JPanel(new BorderLayout());
-	    panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.setBackground(AppColors.BACKGROUND);
-	    panel.setMaximumSize(new Dimension(250, 100));
-	    panel.setBorder(new CompoundBorder(
-	        new MatteBorder(0, 0, 1, 0, new Color(255, 255, 255, 40)),
-	        new EmptyBorder(20, 25, 20, 25)
-	    ));
 
-	    URL logoURL = getClass().getClassLoader().getResource("assets/img/logo_horizontal.png");
-	    Image img = new ImageIcon(logoURL).getImage().getScaledInstance(200, 56, Image.SCALE_SMOOTH);
-	    JLabel label = new JLabel(new ImageIcon(img));
+    private JPanel logoSection() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setBackground(AppColors.BACKGROUND);
+        panel.setMaximumSize(new Dimension(250, 100));
+        panel.setBorder(new CompoundBorder(
+            new MatteBorder(0, 0, 1, 0, new Color(255, 255, 255, 40)),
+            new EmptyBorder(20, 25, 20, 25)
+        ));
 
-	    panel.add(label, BorderLayout.WEST);
-	    return panel;
-	}
-	
-	private JPanel principalSection() {
-	    JPanel panel = new JPanel();
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	    panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.setBackground(AppColors.BACKGROUND);
-	    panel.setBorder(new EmptyBorder(20, 0, 20, 0));
+        URL logoURL = getClass().getClassLoader().getResource("assets/img/logo_horizontal.png");
+        Image img = new ImageIcon(logoURL).getImage().getScaledInstance(200, 56, Image.SCALE_SMOOTH);
+        panel.add(new JLabel(new ImageIcon(img)), BorderLayout.WEST);
+        return panel;
+    }
 
-	    JLabel sectionLabel = new JLabel("PRINCIPAL");
-	    sectionLabel.setForeground(new Color(255, 255, 255, 100));
-	    sectionLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
-	    sectionLabel.setBorder(new EmptyBorder(0, 25, 10, 25));
-	    sectionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.add(sectionLabel);
+    private JPanel principalSection() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setBackground(AppColors.BACKGROUND);
+        panel.setBorder(new EmptyBorder(20, 0, 20, 0));
 
-	    panel.add(createMenuItem("assets/icons/calendar-event.png", "Mis citas", "mis_citas", activeItem.equals("mis_citas")));
-	    panel.add(createMenuItem("assets/icons/calendar-plus.png", "Nueva cita", "nueva_cita", activeItem.equals("nueva_cita")));
+        JLabel lbl = new JLabel("PRINCIPAL");
+        lbl.setForeground(new Color(255, 255, 255, 100));
+        lbl.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        lbl.setBorder(new EmptyBorder(0, 25, 10, 25));
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(lbl);
 
-	    return panel;
-	}
-	
-	private JPanel accountSection() {
-	    JPanel panel = new JPanel();
-	    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	    panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.setBackground(AppColors.BACKGROUND);
-	    panel.setBorder(new CompoundBorder(
-	        new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
-	        new EmptyBorder(20, 0, 20, 0)
-	    ));
+        panel.add(createMenuItem("assets/icons/calendar-event.png", "Mis citas",  "mis_citas",  activeItem.equals("mis_citas")));
+        panel.add(createMenuItem("assets/icons/calendar-plus.png",  "Nueva cita", "nueva_cita", activeItem.equals("nueva_cita")));
+        return panel;
+    }
 
-	    JLabel sectionLabel = new JLabel("CUENTA");
-	    sectionLabel.setForeground(new Color(255, 255, 255, 100));
-	    sectionLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
-	    sectionLabel.setBorder(new EmptyBorder(0, 25, 10, 25));
-	    sectionLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.add(sectionLabel);
+    private JPanel accountSection() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setBackground(AppColors.BACKGROUND);
+        panel.setBorder(new CompoundBorder(
+            new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
+            new EmptyBorder(20, 0, 20, 0)
+        ));
 
-	    panel.add(createMenuItem("assets/icons/user-circle.png", "Mi Perfil", "perfil", activeItem.equals("perfil")));
-	    panel.add(createMenuItem("assets/icons/settings.png", "Configuracion", "configuracion", activeItem.equals("configuracion")));
+        JLabel lbl = new JLabel("CUENTA");
+        lbl.setForeground(new Color(255, 255, 255, 100));
+        lbl.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        lbl.setBorder(new EmptyBorder(0, 25, 10, 25));
+        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(lbl);
 
-	    return panel;
-	}
-	
-	private JPanel profileSection() {
-	    JPanel panel = new JPanel(new BorderLayout());
-	    panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    panel.setBackground(AppColors.BACKGROUND);
-	    panel.setMaximumSize(new Dimension(250, 70));
-	    panel.setBorder(new CompoundBorder(
-	        new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
-	        new EmptyBorder(12, 10, 12, 10)
-	    ));
+        panel.add(createMenuItem("assets/icons/user-circle.png", "Mi Perfil", "perfil", activeItem.equals("perfil")));
+        return panel;
+    }
 
-	    JLabel avatar = new JLabel();
-	    avatar.setPreferredSize(new Dimension(40, 40));
-	    // URL avatarURL = getClass().getClassLoader().getResource("assets/img/avatar.png");
-	    // Image avatarImg = new ImageIcon(avatarURL).getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-	    // avatar.setIcon(new ImageIcon(avatarImg));
+    private JPanel buildProfileSection() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.setBackground(AppColors.BACKGROUND);
+        panel.setMaximumSize(new Dimension(250, 70));
+        panel.setBorder(new CompoundBorder(
+            new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
+            new EmptyBorder(12, 10, 12, 10)
+        ));
 
-	    JPanel info = new JPanel();
-	    info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
-	    info.setBackground(AppColors.BACKGROUND);
-	    info.setBorder(new EmptyBorder(0, 10, 0, 0));
+        avatarLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int w = getWidth();
+                int h = getHeight();
 
-	    JLabel name = new JLabel("Esteban Samuel");
-	    name.setForeground(Color.WHITE);
-	    name.setFont(new Font("SansSerif", Font.BOLD, 13));
+                if (profileImage != null) {
+                    g2.setClip(new java.awt.geom.Ellipse2D.Float(0, 0, w, h));
+                    g2.drawImage(profileImage, 0, 0, w, h, null);
+                } else {
+                    g2.setColor(AppColors.YELLOW);
+                    g2.fillOval(0, 0, w, h);
 
-	    JLabel role = new JLabel("Administrador");
-	    role.setForeground(new Color(255, 255, 255, 150));
-	    role.setFont(new Font("SansSerif", Font.PLAIN, 11));
+                    String initials = getInitials();
+                    g2.setColor(AppColors.TEXT_DARK);
+                    g2.setFont(new Font("SansSerif", Font.BOLD, 14));
+                    FontMetrics fm = g2.getFontMetrics();
+                    g2.drawString(initials,
+                        (w - fm.stringWidth(initials)) / 2,
+                        (h - fm.getHeight()) / 2 + fm.getAscent()
+                    );
+                }
+                g2.dispose();
+            }
+        };
+        avatarLabel.setPreferredSize(new Dimension(42, 42));
 
-	    info.add(name);
-	    info.add(role);
+        JPanel info = new JPanel();
+        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
+        info.setBackground(AppColors.BACKGROUND);
+        info.setBorder(new EmptyBorder(0, 10, 0, 0));
 
-	    URL logoutURL = getClass().getClassLoader().getResource("assets/icons/logout.png");
-	    Image logoutImg = new ImageIcon(logoutURL).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        JLabel nameLabel = new JLabel(getFullName());
+        nameLabel.setForeground(Color.WHITE);
+        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
 
-	    JButton btnLogout = new JButton(new ImageIcon(logoutImg));
-	    btnLogout.setBackground(null);
-	    btnLogout.setBorderPainted(false);
-	    btnLogout.setContentAreaFilled(false);
-	    btnLogout.setFocusPainted(false);
-	    btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel roleLabel = new JLabel("Usuario");
+        roleLabel.setForeground(new Color(255, 255, 255, 150));
+        roleLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
 
-	    btnLogout.addActionListener(e -> controller.logOut());
-	    
-	    panel.add(avatar, BorderLayout.WEST);
-	    panel.add(info, BorderLayout.CENTER);
-	    panel.add(btnLogout, BorderLayout.EAST);
+        info.add(nameLabel);
+        info.add(roleLabel);
 
-	    return panel;
-	}
-	
-	private JPanel createMenuItem(String iconPath, String text, String section, boolean isActive) {
-	    JPanel item = new JPanel(new BorderLayout());
-	    item.setAlignmentX(Component.LEFT_ALIGNMENT);
-	    item.setMaximumSize(new Dimension(250, 44));
-	    item.setPreferredSize(new Dimension(250, 44));
-	    item.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        URL logoutURL = getClass().getClassLoader().getResource("assets/icons/logout.png");
+        Image logoutImg = new ImageIcon(logoutURL).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        JButton btnLogout = new JButton(new ImageIcon(logoutImg));
+        btnLogout.setBackground(null);
+        btnLogout.setBorderPainted(false);
+        btnLogout.setContentAreaFilled(false);
+        btnLogout.setFocusPainted(false);
+        btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnLogout.setToolTipText("Cerrar sesión");
+        btnLogout.addActionListener(e -> controller.logOut());
 
-	    if (isActive) {
-	        item.setOpaque(true);
-	        item.setBackground(AppColors.PANEL2);
-	        item.setBorder(new CompoundBorder(
-	            new MatteBorder(0, 3, 0, 0, AppColors.YELLOW),
-	            new EmptyBorder(12, 22, 12, 15)
-	        ));
-	    } else {
-	        item.setOpaque(true);
-	        item.setBackground(AppColors.BACKGROUND);
-	        item.setBorder(new EmptyBorder(12, 25, 12, 15));
-	    }
+        panel.add(avatarLabel, BorderLayout.WEST);
+        panel.add(info, BorderLayout.CENTER);
+        panel.add(btnLogout, BorderLayout.EAST);
 
-	    item.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseClicked(MouseEvent e) {
-	            controller.onMenuItemClick(section);
-	        }
+        return panel;
+    }
 
-	        @Override
-	        public void mouseEntered(MouseEvent e) {
-	            if (!activeItem.equals(section)) {
-	                item.setBackground(new Color(40, 43, 52));
-	                item.repaint();
-	            }
-	        }
+    public void updateProfileImage(Image image) {
+        this.profileImage = image;
+        if (avatarLabel != null) avatarLabel.repaint();
+    }
 
-	        @Override
-	        public void mouseExited(MouseEvent e) {
-	            if (!activeItem.equals(section)) {
-	                item.setBackground(AppColors.BACKGROUND);
-	                item.repaint();
-	            }
-	        }
-	    });
+    private JPanel createMenuItem(String iconPath, String text, String section, boolean isActive) {
+        JPanel item = new JPanel(new BorderLayout());
+        item.setAlignmentX(Component.LEFT_ALIGNMENT);
+        item.setMaximumSize(new Dimension(250, 44));
+        item.setPreferredSize(new Dimension(250, 44));
+        item.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-	    URL iconURL = getClass().getClassLoader().getResource(iconPath);
-	    if (iconURL != null) {
-	        Image img = new ImageIcon(iconURL).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-	        item.add(new JLabel(new ImageIcon(img)), BorderLayout.WEST);
-	    }
+        if (isActive) {
+            item.setOpaque(true);
+            item.setBackground(AppColors.PANEL2);
+            item.setBorder(new CompoundBorder(
+                new MatteBorder(0, 3, 0, 0, AppColors.YELLOW),
+                new EmptyBorder(12, 22, 12, 15)
+            ));
+        } else {
+            item.setOpaque(true);
+            item.setBackground(AppColors.BACKGROUND);
+            item.setBorder(new EmptyBorder(12, 25, 12, 15));
+        }
 
-	    JLabel label = new JLabel(text);
-	    label.setForeground(Color.WHITE);
-	    label.setFont(new Font("SansSerif", Font.PLAIN, 14));
-	    label.setBorder(new EmptyBorder(0, 12, 0, 0));
-	    item.add(label, BorderLayout.CENTER);
+        item.addMouseListener(new MouseAdapter() {
+            @Override public void mouseClicked(MouseEvent e)  { controller.onMenuItemClick(section); }
+            @Override public void mouseEntered(MouseEvent e)  { if (!activeItem.equals(section)) { item.setBackground(new Color(40, 43, 52)); item.repaint(); } }
+            @Override public void mouseExited(MouseEvent e)   { if (!activeItem.equals(section)) { item.setBackground(AppColors.BACKGROUND); item.repaint(); } }
+        });
 
-	    return item;
-	}
-	
-	public void setActiveItem(String section) {
-	    this.activeItem = section;
-	    
-	    removeAll();
-	    add(logoSection());
-	    add(principalSection());
-	    add(accountSection());
-	    add(Box.createVerticalGlue());
-	    add(profileSection());
-	    revalidate();
-	    repaint();
-	}
+        URL iconURL = getClass().getClassLoader().getResource(iconPath);
+        if (iconURL != null) {
+            Image img = new ImageIcon(iconURL).getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            item.add(new JLabel(new ImageIcon(img)), BorderLayout.WEST);
+        }
+
+        JLabel label = new JLabel(text);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        label.setBorder(new EmptyBorder(0, 12, 0, 0));
+        item.add(label, BorderLayout.CENTER);
+
+        return item;
+    }
+
+    public void setActiveItem(String section) {
+        this.activeItem = section;
+        removeAll();
+        add(logoSection());
+        add(principalSection());
+        add(accountSection());
+        add(Box.createVerticalGlue());
+        add(buildProfileSection());
+        revalidate();
+        repaint();
+    }
+
+    private String getFullName() {
+        if (Session.getCurrentUser() == null) return "Usuario";
+        String first = Session.getCurrentUser().getFirstName();
+        String last  = Session.getCurrentUser().getLastName();
+        if (first == null) first = "";
+        if (last  == null) last  = "";
+        String full = (first + " " + last).trim();
+        return full.isEmpty() ? "Usuario" : full;
+    }
+
+    private String getInitials() {
+        if (Session.getCurrentUser() == null) return "U";
+        String first = Session.getCurrentUser().getFirstName();
+        String last  = Session.getCurrentUser().getLastName();
+        String i = "";
+        if (first != null && !first.isEmpty()) i += first.charAt(0);
+        if (last  != null && !last.isEmpty())  i += last.charAt(0);
+        return i.isEmpty() ? "U" : i.toUpperCase();
+    }
 }
