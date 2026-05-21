@@ -28,10 +28,10 @@ public class CalenderView extends JPanel{
 	
 	private JPanel createHeaderPanel() {
 		JPanel panel = new JPanel();
+		panel.setMinimumSize(new Dimension(1030, 70));
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+		panel.setBackground(AppColors.PANEL);
 		
-		JLabel label = new JLabel("Hola mundo!");
-		
-		panel.add(label);
 		
 		return panel;
 	}
