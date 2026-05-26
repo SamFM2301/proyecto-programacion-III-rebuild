@@ -11,7 +11,7 @@ import utils.PasswordUtils;
 public class RegisterRepository {
 
     public boolean saveUser(User user) {
-        String sql = "INSERT INTO users (first_name, last_name, email, date, gender, password) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (first_name, last_name, email, date, gender, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -22,6 +22,7 @@ public class RegisterRepository {
             stmt.setString(4, user.getDate());
             stmt.setString(5, user.getGender());
             stmt.setString(6, PasswordUtils.hashPassword(user.getPassword()));
+            stmt.setString(7, user.getRole());
 
             int rowsAffected = stmt.executeUpdate();
             return rowsAffected > 0;

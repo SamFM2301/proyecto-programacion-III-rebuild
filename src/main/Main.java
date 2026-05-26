@@ -2,15 +2,13 @@ package main;
 
 import controllers.HomeController;
 import controllers.LoginController;
-import controllers.RegisterController;
 import utils.PasswordUtils;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//new LoginController();
-		//new RegisterController();
 		new HomeController();
+		//new LoginController();
 	}
 
 }

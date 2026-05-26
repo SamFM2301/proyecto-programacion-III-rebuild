@@ -1,26 +1,11 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -158,10 +143,16 @@ public class SideMenuView extends JPanel {
         nameLabel.setForeground(Color.WHITE);
         nameLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
 
-        JLabel roleLabel = new JLabel("Usuario");
+        JLabel roleLabel = new JLabel("");
         roleLabel.setForeground(new Color(255, 255, 255, 150));
         roleLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
-
+        
+        try {
+        	roleLabel.setText(Session.getCurrentUser().getRole());
+        } catch (Exception e) {
+        	System.out.println(e);
+        }
+        
         info.add(nameLabel);
         info.add(roleLabel);
 

@@ -27,9 +27,7 @@ public class SideMenuController {
                 homeView.setCurrentView(new CalenderController().getView());
                 break;
             case "nueva_cita":
-                System.out.println("NUEVA CITA");
-                homeView.setCurrentView(new CalenderController().getView());
-                // homeView.setCurrentView(new NuevaCitaView());
+                homeView.setCurrentView(new NewDateController().getView());
                 break;
             case "perfil":
                 homeView.setCurrentView(new ProfileView(view));

@@ -13,7 +13,7 @@ public class LoginRepository {
 
     public User login(String email, String password) {
        
-    	String sql = "SELECT id, email, password, first_name, last_name, gender, date FROM users WHERE email = ?";
+    	String sql = "SELECT id_user, email, password, first_name, last_name, gender, date, role FROM users WHERE email = ?";
 
         try (
             Connection conn = DatabaseConnection.getConnection();
@@ -29,12 +29,13 @@ public class LoginRepository {
                     return null;
 
                 User user = new User();
-                user.setId(rs.getInt("id"));
+                user.setId(rs.getInt("id_user"));
                 user.setEmail(rs.getString("email"));
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setGender(rs.getString("gender"));                
                 user.setDate(rs.getString("date"));
+                user.setRole(rs.getString("role"));
                 
                 return user;
             }

@@ -30,6 +30,7 @@ public class RegisterController {
 			user.setDate(view.getDate());
 			user.setGender(view.getGender());
 			user.setPassword(view.getPassword());
+			user.setRole("USUARIO");
 			
 			if (repository.saveUser(user)) {
 				view.resetFields();

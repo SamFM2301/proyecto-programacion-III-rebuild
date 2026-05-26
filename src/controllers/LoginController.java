@@ -25,6 +25,7 @@ public class LoginController {
             view.setErrorPassword("Correo o contraseña incorrectos");
             return;
         }
+        
         Session.setCurrentUser(user);
 
         new HomeController();
