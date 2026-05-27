@@ -14,14 +14,13 @@ public class NewDateView extends JPanel{
 	public NewDateView(NewDateController controller) {
 		this.controller = controller;
 		
-		setLayout(new FlowLayout());
-        setPreferredSize(new Dimension(250, 0));
-        setMinimumSize(new Dimension(250, 0));
-        setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
+		setLayout(new BorderLayout());
+		setMinimumSize(new Dimension(1030, 70));
+        setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
         setBackground(AppColors.PANEL);
 
-        JLabel label = new JLabel("HOLA MUNDO!");
-        add(label);
+        add(new HeaderDateView(), BorderLayout.NORTH);
+        add(new SideDateView(), BorderLayout.EAST);
         
         setVisible(true);
 	}
