@@ -27,7 +27,7 @@ public class RegisterController {
 			user.setFirstName(view.getName());
 			user.setLastName(view.getLastName());
 			user.setEmail(view.getEmail());
-			user.setDate(view.getDate());
+			user.setBirthDate(view.getDate());
 			user.setGender(view.getGender());
 			user.setPassword(view.getPassword());
 			user.setRole("USUARIO");

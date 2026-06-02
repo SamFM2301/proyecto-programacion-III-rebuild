@@ -45,7 +45,7 @@ public class ProfileView extends JPanel {
         title.setForeground(AppColors.TEXT_LIGHT);
 
         JPanel separator = new JPanel();
-        separator.setBackground(new Color(255, 255, 255, 30));
+        separator.setBackground(AppColors.BORDER_WHITE_40);
         separator.setPreferredSize(new Dimension(0, 1));
 
         panel.add(title, BorderLayout.NORTH);
@@ -85,7 +85,7 @@ public class ProfileView extends JPanel {
                     g2.fillOval(0, 0, w, h);
                     String initials = getInitials();
                     g2.setColor(AppColors.TEXT_DARK);
-                    g2.setFont(new Font("SansSerif", Font.BOLD, 36));
+                    g2.setFont(AppFonts.bold(36));
                     FontMetrics fm = g2.getFontMetrics();
                     g2.drawString(initials,
                         (w - fm.stringWidth(initials)) / 2,
@@ -94,7 +94,7 @@ public class ProfileView extends JPanel {
                 }
                
                 g2.setClip(null);
-                g2.setColor(new Color(255, 255, 255, 40));
+                g2.setColor(AppColors.BORDER_WHITE_40);
                 g2.setStroke(new BasicStroke(2));
                 g2.drawOval(1, 1, w - 2, h - 2);
                 g2.dispose();
@@ -107,7 +107,7 @@ public class ProfileView extends JPanel {
         avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton btnChangePhoto = new JButton("Cambiar foto de perfil");
-        btnChangePhoto.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        btnChangePhoto.setFont(AppFonts.regular(11));
         btnChangePhoto.setForeground(AppColors.YELLOW);
         btnChangePhoto.setBackground(null);
         btnChangePhoto.setBorder(BorderFactory.createCompoundBorder(
@@ -155,7 +155,7 @@ public class ProfileView extends JPanel {
 
 
         JLabel lblName = new JLabel(getFullName(user));
-        lblName.setFont(new Font("SansSerif", Font.BOLD, 26));
+        lblName.setFont(AppFonts.bold(26));
         lblName.setForeground(AppColors.TEXT_LIGHT);
         lblName.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -178,7 +178,7 @@ public class ProfileView extends JPanel {
 
         panel.add(buildInfoRow(
             "Fecha de nacimiento",
-            user != null && user.getDate() != null ? user.getDate() : "—"
+            user != null && user.getBirthDate() != null ? user.getBirthDate() : "—"
         ));
 
         panel.add(Box.createVerticalStrut(20));
@@ -195,12 +195,12 @@ public class ProfileView extends JPanel {
         row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblLabel = new JLabel(label);
-        lblLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
-        lblLabel.setForeground(new Color(255, 255, 255, 150));
+        lblLabel.setFont(AppFonts.bold(12));
+        lblLabel.setForeground(AppColors.WHITE_ALPHA_150);
         lblLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblValue = new JLabel(value);
-        lblValue.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        lblValue.setFont(AppFonts.regular(14));
         lblValue.setForeground(AppColors.TEXT_LIGHT);
         lblValue.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -213,7 +213,7 @@ public class ProfileView extends JPanel {
 
     private JPanel buildSeparator() {
         JPanel sep = new JPanel();
-        sep.setBackground(new Color(255, 255, 255, 25));
+        sep.setBackground(AppColors.BORDER_WHITE_40);
         sep.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
         sep.setAlignmentX(Component.LEFT_ALIGNMENT);
         return sep;

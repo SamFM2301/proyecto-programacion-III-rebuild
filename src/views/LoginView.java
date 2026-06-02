@@ -201,7 +201,7 @@ public class LoginView extends JFrame{
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
         
         error.setFont(AppFonts.small());
-        error.setForeground(Color.RED);
+        error.setForeground(AppColors.ERROR);
         error.setText(" ");
         error.setAlignmentX(LEFT_ALIGNMENT);
         

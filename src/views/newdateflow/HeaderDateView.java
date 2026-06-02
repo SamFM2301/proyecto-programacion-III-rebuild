@@ -1,4 +1,4 @@
-package views;
+package views.newdateflow;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,18 +22,18 @@ public class HeaderDateView extends JPanel{
         "Seleccionar fecha y hora",
         "Confirmar cita"
 	};
-	
+
 	private JPanel stepPanel;
-    private JLabel pageTitleLabel;
+    private JLabel lblPageTitle;
 	private int currentStep;
-	
+
 	public HeaderDateView() {
 		this.currentStep = 0;
-		
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(AppColors.PANEL);
         setBorder(new CompoundBorder(
-            new MatteBorder(0, 0, 1, 0, new Color(30, 35, 53)),
+            new MatteBorder(0, 0, 1, 0, AppColors.PANEL2),
             new EmptyBorder(20, 28, 16, 28)
         ));
 
@@ -41,26 +41,30 @@ public class HeaderDateView extends JPanel{
         stepPanel.setOpaque(false);
         stepPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        pageTitleLabel = new JLabel();
-        pageTitleLabel.setFont(AppFonts.bold(22));
-        pageTitleLabel.setForeground(AppColors.TEXT_LIGHT);
-        pageTitleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pageTitleLabel.setBorder(new EmptyBorder(6, 0, 0, 0));
+        lblPageTitle = new JLabel();
+        lblPageTitle.setFont(AppFonts.bold(22));
+        lblPageTitle.setForeground(AppColors.TEXT_LIGHT);
+        lblPageTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        lblPageTitle.setBorder(new EmptyBorder(6, 0, 0, 0));
 
         add(stepPanel);
-        add(pageTitleLabel);
+        add(lblPageTitle);
 
         setStep(0);
 	}
-	
+
 	public void setStep(int step) {
         this.currentStep = step;
-        updateStepPanel();
         if (step >= 0 && step < PAGE_TITLES.length) {
-            pageTitleLabel.setText(PAGE_TITLES[step]);
+        	lblPageTitle.setText(PAGE_TITLES[step]);
+        	stepPanel.setVisible(true);
+        	updateStepPanel();
+        } else {
+        	lblPageTitle.setText("");
+        	stepPanel.setVisible(false);
         }
     }
-	
+
 	private void updateStepPanel() {
 		stepPanel.removeAll();
 
@@ -68,22 +72,22 @@ public class HeaderDateView extends JPanel{
             if (i > 0) {
                 JLabel arrow = new JLabel("\u203A");
                 arrow.setFont(AppFonts.bold(14));
-                arrow.setForeground(new Color(75, 83, 114));
+                arrow.setForeground(AppColors.BUTTON_DISABLED_TEXT);
                 stepPanel.add(arrow);
             }
 
-            JLabel stepLabel = new JLabel(STEP_NAMES[i]);
-            stepLabel.setFont(AppFonts.regular(11));
+            JLabel lblStep = new JLabel(STEP_NAMES[i]);
+            lblStep.setFont(AppFonts.regular(11));
 
             if (i == currentStep) {
-                stepLabel.setForeground(AppColors.YELLOW);
+            	lblStep.setForeground(AppColors.YELLOW);
             } else if (i < currentStep) {
-                stepLabel.setForeground(new Color(107, 116, 153));
+            	lblStep.setForeground(AppColors.TEXT_MUTED);
             } else {
-                stepLabel.setForeground(new Color(75, 83, 114));
+            	lblStep.setForeground(AppColors.BUTTON_DISABLED_TEXT);
             }
 
-            stepPanel.add(stepLabel);
+            stepPanel.add(lblStep);
         }
 
         stepPanel.revalidate();

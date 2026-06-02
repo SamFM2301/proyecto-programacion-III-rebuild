@@ -12,6 +12,7 @@ import javax.swing.border.MatteBorder;
 
 import controllers.SideMenuController;
 import utils.AppColors;
+import utils.AppFonts;
 import utils.Session;
 
 public class SideMenuView extends JPanel {
@@ -45,7 +46,7 @@ public class SideMenuView extends JPanel {
         panel.setBackground(AppColors.BACKGROUND);
         panel.setMaximumSize(new Dimension(250, 100));
         panel.setBorder(new CompoundBorder(
-            new MatteBorder(0, 0, 1, 0, new Color(255, 255, 255, 40)),
+            new MatteBorder(0, 0, 1, 0, AppColors.BORDER_WHITE_40),
             new EmptyBorder(20, 25, 20, 25)
         ));
 
@@ -63,8 +64,8 @@ public class SideMenuView extends JPanel {
         panel.setBorder(new EmptyBorder(20, 0, 20, 0));
 
         JLabel lbl = new JLabel("PRINCIPAL");
-        lbl.setForeground(new Color(255, 255, 255, 100));
-        lbl.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        lbl.setForeground(AppColors.WHITE_ALPHA_100);
+        lbl.setFont(AppFonts.regular(11));
         lbl.setBorder(new EmptyBorder(0, 25, 10, 25));
         lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(lbl);
@@ -80,13 +81,13 @@ public class SideMenuView extends JPanel {
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.setBackground(AppColors.BACKGROUND);
         panel.setBorder(new CompoundBorder(
-            new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
+            new MatteBorder(1, 0, 0, 0, AppColors.BORDER_WHITE_40),
             new EmptyBorder(20, 0, 20, 0)
         ));
 
         JLabel lbl = new JLabel("CUENTA");
-        lbl.setForeground(new Color(255, 255, 255, 100));
-        lbl.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        lbl.setForeground(AppColors.WHITE_ALPHA_100);
+        lbl.setFont(AppFonts.regular(11));
         lbl.setBorder(new EmptyBorder(0, 25, 10, 25));
         lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(lbl);
@@ -101,7 +102,7 @@ public class SideMenuView extends JPanel {
         panel.setBackground(AppColors.BACKGROUND);
         panel.setMaximumSize(new Dimension(250, 70));
         panel.setBorder(new CompoundBorder(
-            new MatteBorder(1, 0, 0, 0, new Color(255, 255, 255, 40)),
+            new MatteBorder(1, 0, 0, 0, AppColors.BORDER_WHITE_40),
             new EmptyBorder(12, 10, 12, 10)
         ));
 
@@ -140,12 +141,12 @@ public class SideMenuView extends JPanel {
         info.setBorder(new EmptyBorder(0, 10, 0, 0));
 
         JLabel nameLabel = new JLabel(getFullName());
-        nameLabel.setForeground(Color.WHITE);
-        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 13));
+        nameLabel.setForeground(AppColors.TEXT_LIGHT);
+        nameLabel.setFont(AppFonts.bold(13));
 
         JLabel roleLabel = new JLabel("");
-        roleLabel.setForeground(new Color(255, 255, 255, 150));
-        roleLabel.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        roleLabel.setForeground(AppColors.WHITE_ALPHA_150);
+        roleLabel.setFont(AppFonts.regular(11));
         
         try {
         	roleLabel.setText(Session.getCurrentUser().getRole());
@@ -201,7 +202,7 @@ public class SideMenuView extends JPanel {
 
         item.addMouseListener(new MouseAdapter() {
             @Override public void mouseClicked(MouseEvent e)  { controller.onMenuItemClick(section); }
-            @Override public void mouseEntered(MouseEvent e)  { if (!activeItem.equals(section)) { item.setBackground(new Color(40, 43, 52)); item.repaint(); } }
+            @Override public void mouseEntered(MouseEvent e)  { if (!activeItem.equals(section)) { item.setBackground(AppColors.HOVER_BG); item.repaint(); } }
             @Override public void mouseExited(MouseEvent e)   { if (!activeItem.equals(section)) { item.setBackground(AppColors.BACKGROUND); item.repaint(); } }
         });
 
@@ -212,8 +213,8 @@ public class SideMenuView extends JPanel {
         }
 
         JLabel label = new JLabel(text);
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        label.setForeground(AppColors.TEXT_LIGHT);
+        label.setFont(AppFonts.regular(14));
         label.setBorder(new EmptyBorder(0, 12, 0, 0));
         item.add(label, BorderLayout.CENTER);
 

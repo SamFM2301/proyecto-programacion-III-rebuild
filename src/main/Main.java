@@ -7,8 +7,7 @@ import utils.PasswordUtils;
 public class Main {
 
 	public static void main(String[] args) {
-		new HomeController();
-		//new LoginController();
+		//new HomeController();
+		new LoginController();
 	}
-
 }

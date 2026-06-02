@@ -47,7 +47,7 @@ public class CalenderView extends JPanel{
 		panel.setLayout(new BorderLayout());
 		panel.setMinimumSize(new Dimension(1030, 70));
         panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
-        panel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+        panel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, AppColors.PANEL2));
 		panel.setBackground(AppColors.PANEL);
 		
 		JPanel dateSelection = new JPanel(new FlowLayout());
@@ -71,7 +71,6 @@ public class CalenderView extends JPanel{
 		nextWrapper.setBackground(AppColors.PANEL);
 		nextWrapper.add(btnNextDate);
 		
-		// TODO AQUI VAN LOS LISTENERS DE LOS BOTONES DE PREVIOS Y NEXT DATE
 		btnPreviosDate.addActionListener(e -> controller.previousMonth());
 		btnNextDate.addActionListener(e -> controller.nextMonth());
 		
@@ -89,8 +88,8 @@ public class CalenderView extends JPanel{
 		}
 	
 		lblDate = new JLabel();
-		lblDate.setFont(new Font("Arial", Font.BOLD, 18));
-		lblDate.setForeground(Color.WHITE);
+		lblDate.setFont(AppFonts.bold(18));
+		lblDate.setForeground(AppColors.TEXT_LIGHT);
 		lblDate.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 12));
 
 		String nameMonth = actualMonth.getDisplayName(TextStyle.FULL, Locale.of("es", "MX"));
@@ -103,7 +102,7 @@ public class CalenderView extends JPanel{
 		
 		RoundedButton btnNewAppointment = new RoundedButton("Nueva cita", 8);
 		btnNewAppointment.setBackground(AppColors.YELLOW);
-		btnNewAppointment.setForeground(Color.BLACK);
+		btnNewAppointment.setForeground(AppColors.TEXT_DARK);
 		btnNewAppointment.setFont(AppFonts.button());
 		
 		URL plusIconURL = getClass().getClassLoader().getResource("assets/icons/plus-black.png");
@@ -129,13 +128,13 @@ public class CalenderView extends JPanel{
 
 	    if (dayNumber > 0) {
 	        JLabel lblDay = new JLabel(String.valueOf(dayNumber));
-	        lblDay.setForeground(isToday ? AppColors.YELLOW : Color.WHITE);
+	        lblDay.setForeground(isToday ? AppColors.YELLOW : AppColors.TEXT_LIGHT);
 	        lblDay.setFont(AppFonts.regular(12));
 	        lblDay.setBorder(BorderFactory.createEmptyBorder(6, 8, 0, 0));
 	        cell.add(lblDay, BorderLayout.NORTH);
 
 	        if (isToday) {
-	            cell.setBorder(BorderFactory.createLineBorder(Color.CYAN, 2));
+	            cell.setBorder(BorderFactory.createLineBorder(AppColors.YELLOW, 2));
 	        }
 	    }
 
@@ -146,8 +145,7 @@ public class CalenderView extends JPanel{
 	    JPanel panel = new JPanel(new BorderLayout());
 	    panel.setBackground(AppColors.PANEL);
 
-	    // HEADER DE DIAS DE LA SEMANA
-	    String[] days = {"DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"};
+	    String[] days = {"DOMINGO", "LUNES", "MARTES", "MI\u00c9RCOLES", "JUEVES", "VIERNES", "S\u00c1BADO"};
 	    
 	    JPanel headersPanel = new JPanel(new GridLayout(1, 7));
 	    headersPanel.setBackground(AppColors.BACKGROUND);
@@ -161,7 +159,6 @@ public class CalenderView extends JPanel{
 	        headersPanel.add(lbl);
 	    }
 
-	    // CELDAS
 	    JPanel gridPanel = new JPanel(new GridLayout(6, 7));
 	    gridPanel.setBackground(AppColors.PANEL);
 

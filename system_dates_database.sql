@@ -1,17 +1,13 @@
 CREATE DATABASE system_dates_database;
 USE system_dates_database;
 
-DROP TABLE users;
-
-SELECT * FROM users;
-
 CREATE TABLE users (
     id_user      INT PRIMARY KEY AUTO_INCREMENT,
     first_name   VARCHAR(100)  NOT NULL,
     last_name    VARCHAR(100)  NOT NULL,
     email        VARCHAR(150)  NOT NULL UNIQUE,
     gender       VARCHAR(20)   NOT NULL,
-    date    DATE          NOT NULL,
+    birth_date    DATE          NOT NULL,
     password     VARCHAR(255)  NOT NULL,
     role ENUM('ADMIN', 'USUARIO'),
     created_at   TIMESTAMP     DEFAULT CURRENT_TIMESTAMP
@@ -89,3 +85,30 @@ CREATE TABLE review (
     FOREIGN KEY (id_user)        REFERENCES users(id_user),
     FOREIGN KEY (id_business)    REFERENCES business(id_business)
 );
+
+
+INSERT INTO users (first_name, last_name, email, gender, birth_date, password, role) VALUES
+('Samuel', 'Frías',  'samuel@gmail.com',  'Hombre', '2004-03-15', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
+('Isaac',  'Camacho', 'isaac@gmail.com', 'Hombre', '2003-07-22', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'ADMIN');
+
+INSERT INTO business (name, address, phone, opening_time, close_time, qualification) VALUES
+('Barbería El Estilo', 'Av. Reforma 245, La Paz, BCS', '6121234567', '09:00:00', '20:00:00', 4.5);
+
+INSERT INTO employee (id_business, first_name, last_name, experience) VALUES
+(1, 'Carlos',   'Mendoza',  5),
+(1, 'Roberto',  'Llanes',   3),
+(1, 'Miguel',   'Soto',     7),
+(1, 'Fernando', 'Ramos',    2);
+
+INSERT INTO service (id_business, name, description, duration_min, price) VALUES
+(1, 'Corte de cabello',  'Corte clásico o moderno a tu elección',   30, 120.00),
+(1, 'Corte + barba',     'Corte de cabello más arreglo de barba',   50, 200.00),
+(1, 'Arreglo de barba',  'Perfilado y arreglo con navaja',          20,  90.00),
+(1, 'Tinte',             'Aplicación de tinte en cabello completo', 60, 350.00),
+(1, 'Keratina',          'Tratamiento de alisado con keratina',     90, 500.00);
+
+INSERT INTO employee_service (id_employee, id_service) VALUES
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), 
+(2, 1), (2, 2), (2, 3), 
+(3, 1), (3, 2), (3, 3), (3, 4), (3, 5), 
+(4, 1), (4, 3);

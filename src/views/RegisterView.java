@@ -205,7 +205,7 @@ public class RegisterView extends JFrame{
         field.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
         
         error.setFont(AppFonts.small());
-        error.setForeground(Color.RED);
+        error.setForeground(AppColors.ERROR);
         error.setText(" ");
         error.setAlignmentX(LEFT_ALIGNMENT);
         
@@ -267,7 +267,7 @@ public class RegisterView extends JFrame{
 	    }
 	    
 	    lblErrorDate.setFont(AppFonts.small());
-        lblErrorDate.setForeground(Color.RED);
+	    lblErrorDate.setForeground(AppColors.ERROR);
         lblErrorDate.setText(" ");
         lblErrorDate.setAlignmentX(LEFT_ALIGNMENT);
 
@@ -306,7 +306,7 @@ public class RegisterView extends JFrame{
 	    lblErrorGender = new JLabel();
 	    
 	    lblErrorGender.setFont(AppFonts.small());
-	    lblErrorGender.setForeground(Color.RED);
+	    lblErrorGender.setForeground(AppColors.ERROR);
 	    lblErrorGender.setText(" ");
 	    lblErrorGender.setAlignmentX(LEFT_ALIGNMENT);
 
