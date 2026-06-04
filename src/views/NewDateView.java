@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import controllers.NewDateController;
+import controllers.HomeController;
 import utils.AppColors;
 import views.newdateflow.ConfirmDateView;
 import views.newdateflow.HeaderDateView;
@@ -70,7 +71,15 @@ public class NewDateView extends JPanel {
 
             int step = controller.getCurrentStep();
             if (step == 3) {
-                controller.confirmAppointment();
+                int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Estás seguro de que deseas agendar esta cita?",
+                    "Confirmar cita",
+                    JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    controller.confirmAppointment();
+                }
             } else {
                 controller.nextStep();
             }

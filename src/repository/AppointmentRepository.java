@@ -10,6 +10,7 @@ import java.util.List;
 
 import config.DatabaseConnection;
 import models.Appointment;
+import models.AppointmentDetail;
 
 public class AppointmentRepository {
 
@@ -180,5 +181,60 @@ public class AppointmentRepository {
         }
 
         return false;
+    }
+
+    public List<AppointmentDetail> getDetailedAppointmentsByUserAndDate(int userId, LocalDate date) {
+        List<AppointmentDetail> appointments = new ArrayList<>();
+        String sql = "SELECT " +
+                     "  a.id_appointment, " +
+                     "  a.appointment_date, " +
+                     "  a.start_time, " +
+                     "  a.end_time, " +
+                     "  a.status, " +
+                     "  a.notes, " +
+                     "  s.name       AS service_name, " +
+                     "  s.price      AS service_price, " +
+                     "  e.first_name AS employee_first, " +
+                     "  e.last_name  AS employee_last " +
+                     "FROM appointment a " +
+                     "JOIN service  s ON a.id_service  = s.id_service " +
+                     "LEFT JOIN employee e ON a.id_employee = e.id_employee " +
+                     "WHERE a.id_user = ? AND a.appointment_date = ? " +
+                     "ORDER BY a.start_time ASC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setDate(2, java.sql.Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                AppointmentDetail detail = new AppointmentDetail();
+                detail.setId(rs.getInt("id_appointment"));
+                detail.setDate(rs.getDate("appointment_date").toLocalDate());
+                detail.setStartTime(rs.getTime("start_time").toLocalTime());
+                detail.setEndTime(rs.getTime("end_time").toLocalTime());
+                detail.setStatus(rs.getString("status"));
+                detail.setNotes(rs.getString("notes"));
+                detail.setServiceName(rs.getString("service_name"));
+                detail.setServicePrice(rs.getDouble("service_price"));
+
+                String firstName = rs.getString("employee_first");
+                String lastName = rs.getString("employee_last");
+                if (firstName != null && lastName != null) {
+                    detail.setEmployeeFullName(firstName + " " + lastName);
+                } else {
+                    detail.setEmployeeFullName("Sin asignar");
+                }
+
+                appointments.add(detail);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return appointments;
     }
 }

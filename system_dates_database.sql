@@ -89,8 +89,8 @@ CREATE TABLE review (
 -- registros
 
 INSERT INTO users (first_name, last_name, email, gender, birth_date, password, role) VALUES
-('Samuel', 'Frías',  'samuel@gmail.com',  'Hombre', '2004-03-15', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
-('Isaac',  'Camacho', 'isaac@gmail.com', 'Hombre', '2003-07-22', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'ADMIN'),
+('Samuel', 'Frías',  'samuel@gmail.com',  'Hombre', '2004-03-15', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'ADMIN'),
+('Isaac',  'Camacho', 'isaac@gmail.com', 'Hombre', '2003-07-22', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
 ('Luis', 'García', 'luis@gmail.com', 'Hombre', '1998-05-10', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
 ('Ana', 'López', 'ana@gmail.com', 'Mujer', '2000-09-18', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
 ('Jorge', 'Martínez', 'jorge@gmail.com', 'Hombre', '1995-11-22', '$2a$10$ZHfokperq5wzeC6Xe3ifze9SQhO.g6mthtsRA.1Vnsvt0c1liS2Te', 'USUARIO'),
@@ -142,14 +142,14 @@ INSERT INTO appointment
 VALUES
 (1,1,1,1,'2026-06-01','09:00:00','09:30:00','completada','Cliente frecuente'),
 (2,1,2,2,'2026-06-01','10:00:00','10:50:00','completada',''),
-(3,2,6,5,'2026-06-02','11:00:00','11:35:00','confirmada',''),
-(4,3,7,6,'2026-06-02','12:00:00','12:15:00','completada',''),
-(5,4,8,7,'2026-06-03','13:00:00','13:25:00','completada',''),
-(6,5,9,8,'2026-06-03','14:00:00','14:30:00','confirmada',''),
-(7,6,10,9,'2026-06-04','15:00:00','16:30:00','pendiente',''),
-(8,1,3,3,'2026-06-04','16:00:00','16:20:00','completada',''),
+(3,1,1,1,'2026-06-02','11:00:00','11:30:00','confirmada',''),
+(4,1,3,2,'2026-06-02','12:00:00','12:20:00','completada',''),
+(5,1,1,1,'2026-06-03','13:00:00','13:30:00','completada',''),
+(6,1,2,2,'2026-06-03','14:00:00','14:50:00','confirmada',''),
+(7,1,4,1,'2026-06-04','15:00:00','16:00:00','pendiente',''),
+(8,1,3,2,'2026-06-04','16:00:00','16:20:00','completada',''),
 (9,1,4,1,'2026-06-05','17:00:00','18:00:00','cancelada','No asistió'),
-(10,1,5,3,'2026-06-05','18:00:00','19:30:00','completada','');
+(10,1,5,2,'2026-06-05','18:00:00','19:30:00','completada','');
 
 
 -- consultas

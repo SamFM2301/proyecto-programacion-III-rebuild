@@ -18,11 +18,14 @@ import models.User;
 import repository.AppointmentRepository;
 import repository.NewDateRepository;
 import utils.Session;
+import views.HomeView;
 import views.NewDateView;
 
 public class NewDateController {
 
     private NewDateView view;
+    private HomeView homeView;
+    private Runnable onNavigateToCalendar;
 
     private SelectServiceController selectServiceController;
     private SelectEmployeeController selectEmployeeController;
@@ -48,6 +51,11 @@ public class NewDateController {
     private LocalTime selectedTime;
 
     public NewDateController() {
+        this(null);
+    }
+
+    public NewDateController(HomeView homeView) {
+        this.homeView = homeView;
         this.repository = new NewDateRepository();
         this.appointmentRepository = new AppointmentRepository();
         this.currentStep = 0;
@@ -302,7 +310,19 @@ public class NewDateController {
     }
 
     public void onResultAction() {
-        resetFlow();
+        if (homeView != null) {
+            homeView.navigateToSection("mis_citas");
+        } else if (onNavigateToCalendar != null) {
+            onNavigateToCalendar.run();
+        }
+    }
+
+    public void setOnNavigateToCalendar(Runnable callback) {
+        this.onNavigateToCalendar = callback;
+    }
+
+    public HomeView getHomeView() {
+        return homeView;
     }
 
     public void resetFlow() {

@@ -8,22 +8,21 @@ import javax.swing.*;
 import controllers.HomeController;
 import controllers.SideMenuController;
 import controllers.CalenderController;
+import controllers.NewDateController;
 import utils.AppColors;
 
 public class HomeView extends JFrame {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private HomeController controller;
+    private static final long serialVersionUID = 1L;
+
+    private HomeController controller;
     private JPanel currentView;
-    private JPanel mainPanel;
+    private JLayeredPane mainPanel;
+    private JPanel contentWrapper;
+    private SideMenuController sideMenuController;
 
     public HomeView(HomeController controller) {
         this.controller = controller;
-        this.currentView = new CalenderController().getView();
-        
+
         initFrame();
         initComponents();
     }
@@ -42,28 +41,66 @@ public class HomeView extends JFrame {
     }
 
     private void initComponents() {
-        setLayout(new BorderLayout());
-
-        mainPanel = new JPanel(new BorderLayout());
+        mainPanel = new JLayeredPane();
         mainPanel.setBackground(AppColors.PANEL);
 
-        SideMenuController sideMenuController = new SideMenuController(this);
-        mainPanel.add(sideMenuController.getView(), BorderLayout.WEST);
-        mainPanel.add(currentView, BorderLayout.CENTER);
+        contentWrapper = new JPanel(new BorderLayout());
+        contentWrapper.setBackground(AppColors.PANEL);
+        contentWrapper.setName("contentWrapper");
+        contentWrapper.setBounds(0, 0, 1280, 720);
 
-        add(mainPanel, BorderLayout.CENTER);
+        sideMenuController = new SideMenuController(this);
+        contentWrapper.add(sideMenuController.getView(), BorderLayout.WEST);
+        currentView = new CalenderController(this).getView();
+        contentWrapper.add(currentView, BorderLayout.CENTER);
+
+        mainPanel.add(contentWrapper, Integer.valueOf(0));
+        mainPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                contentWrapper.setBounds(0, 0, mainPanel.getWidth(), mainPanel.getHeight());
+            }
+        });
+
+        add(mainPanel);
         setVisible(true);
     }
 
-    // ESTE METODO CAMBIA LA VISTA DEL CENTRO
     public void setCurrentView(JPanel view) {
-        if (currentView != null) {
-            mainPanel.remove(currentView);
-        }
-        
+        contentWrapper.remove(currentView);
         currentView = view;
-        mainPanel.add(currentView, BorderLayout.CENTER);
-        mainPanel.revalidate();
-        mainPanel.repaint();
+        contentWrapper.add(currentView, BorderLayout.CENTER);
+        contentWrapper.revalidate();
+        contentWrapper.repaint();
+    }
+
+    public void navigateToSection(String section) {
+        JPanel newView = null;
+        String viewSection = section;
+
+        switch (section) {
+            case "mis_citas":
+                newView = new CalenderController(this).getView();
+                break;
+            case "nueva_cita":
+                newView = new NewDateController(this).getView();
+                break;
+            case "perfil":
+                newView = new ProfileView(null);
+                break;
+        }
+
+        if (newView != null) {
+            setCurrentView(newView);
+            sideMenuController.getView().setActiveItem(viewSection);
+        }
+    }
+
+    public void setSideMenuController(SideMenuController controller) {
+        this.sideMenuController = controller;
+    }
+
+    public JLayeredPane getMainPanel() {
+        return mainPanel;
     }
 }
