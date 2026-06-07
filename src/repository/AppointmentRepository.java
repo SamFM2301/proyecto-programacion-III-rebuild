@@ -48,6 +48,39 @@ public class AppointmentRepository {
         return appointments;
     }
 
+    public List<Appointment> getAllAppointments() {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = "SELECT a.id_appointment, a.id_user, a.id_business, a.id_service, a.id_employee, " +
+                     "a.appointment_date, a.start_time, a.end_time, a.status, a.notes " +
+                     "FROM appointment a WHERE a.status != 'cancelada' ORDER BY a.appointment_date DESC, a.start_time DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setId(rs.getInt("id_appointment"));
+                appointment.setIdUser(rs.getInt("id_user"));
+                appointment.setIdBusiness(rs.getInt("id_business"));
+                appointment.setIdService(rs.getInt("id_service"));
+                appointment.setIdEmployee(rs.getInt("id_employee"));
+                appointment.setAppointmentDate(rs.getDate("appointment_date").toLocalDate());
+                appointment.setStartTime(rs.getTime("start_time").toLocalTime());
+                appointment.setEndTime(rs.getTime("end_time").toLocalTime());
+                appointment.setStatus(rs.getString("status"));
+                appointment.setNotes(rs.getString("notes"));
+                appointments.add(appointment);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return appointments;
+    }
+
     public Appointment getAppointmentById(int id) {
         String sql = "SELECT id_appointment, id_user, id_business, id_service, id_employee, " +
                      "appointment_date, start_time, end_time, status, notes " +
@@ -226,6 +259,105 @@ public class AppointmentRepository {
                     detail.setEmployeeFullName(firstName + " " + lastName);
                 } else {
                     detail.setEmployeeFullName("Sin asignar");
+                }
+
+                appointments.add(detail);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return appointments;
+    }
+
+    public List<Appointment> getAppointmentsByDate(LocalDate date) {
+        List<Appointment> appointments = new ArrayList<>();
+        String sql = "SELECT a.id_appointment, a.id_user, a.id_business, a.id_service, a.id_employee, " +
+                     "a.appointment_date, a.start_time, a.end_time, a.status, a.notes " +
+                     "FROM appointment a WHERE a.appointment_date = ? ORDER BY a.start_time ASC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Appointment appointment = new Appointment();
+                appointment.setId(rs.getInt("id_appointment"));
+                appointment.setIdUser(rs.getInt("id_user"));
+                appointment.setIdBusiness(rs.getInt("id_business"));
+                appointment.setIdService(rs.getInt("id_service"));
+                appointment.setIdEmployee(rs.getInt("id_employee"));
+                appointment.setAppointmentDate(rs.getDate("appointment_date").toLocalDate());
+                appointment.setStartTime(rs.getTime("start_time").toLocalTime());
+                appointment.setEndTime(rs.getTime("end_time").toLocalTime());
+                appointment.setStatus(rs.getString("status"));
+                appointment.setNotes(rs.getString("notes"));
+                appointments.add(appointment);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return appointments;
+    }
+
+    public List<AppointmentDetail> getDetailedAppointmentsByDate(LocalDate date) {
+        List<AppointmentDetail> appointments = new ArrayList<>();
+        String sql = "SELECT " +
+                     "  a.id_appointment, " +
+                     "  a.appointment_date, " +
+                     "  a.start_time, " +
+                     "  a.end_time, " +
+                     "  a.status, " +
+                     "  a.notes, " +
+                     "  s.name       AS service_name, " +
+                     "  s.price      AS service_price, " +
+                     "  e.first_name AS employee_first, " +
+                     "  e.last_name  AS employee_last, " +
+                     "  u.first_name AS client_first, " +
+                     "  u.last_name  AS client_last " +
+                     "FROM appointment a " +
+                     "JOIN service  s ON a.id_service  = s.id_service " +
+                     "LEFT JOIN employee e ON a.id_employee = e.id_employee " +
+                     "JOIN users u ON a.id_user = u.id_user " +
+                     "WHERE a.appointment_date = ? " +
+                     "ORDER BY a.start_time ASC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                AppointmentDetail detail = new AppointmentDetail();
+                detail.setId(rs.getInt("id_appointment"));
+                detail.setDate(rs.getDate("appointment_date").toLocalDate());
+                detail.setStartTime(rs.getTime("start_time").toLocalTime());
+                detail.setEndTime(rs.getTime("end_time").toLocalTime());
+                detail.setStatus(rs.getString("status"));
+                detail.setNotes(rs.getString("notes"));
+                detail.setServiceName(rs.getString("service_name"));
+                detail.setServicePrice(rs.getDouble("service_price"));
+
+                String empFirst = rs.getString("employee_first");
+                String empLast = rs.getString("employee_last");
+                if (empFirst != null && empLast != null) {
+                    detail.setEmployeeFullName(empFirst + " " + empLast);
+                } else {
+                    detail.setEmployeeFullName("Sin asignar");
+                }
+
+                String clientFirst = rs.getString("client_first");
+                String clientLast = rs.getString("client_last");
+                if (clientFirst != null && clientLast != null) {
+                    detail.setClientFullName(clientFirst + " " + clientLast);
+                } else {
+                    detail.setClientFullName("Cliente desconocido");
                 }
 
                 appointments.add(detail);

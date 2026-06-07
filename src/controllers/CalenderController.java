@@ -10,6 +10,7 @@ import views.HomeView;
 public class CalenderController {
 	private CalenderView view;
 	private HomeView homeView;
+	private boolean isAdmin;
 
 	private Month actualMonth = LocalDate.now().getMonth();
 	private int actualYear = LocalDate.now().getYear();
@@ -21,7 +22,8 @@ public class CalenderController {
 	public CalenderController(HomeView homeView) {
 		this.homeView = homeView;
 		int userId = Session.getCurrentUser() != null ? Session.getCurrentUser().getId() : 0;
-		this.view = new CalenderView(this, userId, homeView);
+		this.isAdmin = Session.getCurrentUser() != null && "ADMIN".equals(Session.getCurrentUser().getRole());
+		this.view = new CalenderView(this, userId, isAdmin, homeView);
 	}
 
 	public void nextMonth() {
@@ -64,5 +66,9 @@ public class CalenderController {
 		if (homeView != null) {
 			homeView.navigateToSection("nueva_cita");
 		}
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
 	}
 }

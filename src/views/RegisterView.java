@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import javax.swing.*;
@@ -121,6 +123,14 @@ public class RegisterView extends JFrame{
         // CORREO
         JLabel lblEmail = new JLabel("Correo: *");
         txtEmail = new RoundedTextField(8);
+        txtEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    controller.onRegister();
+                }
+            }
+        });
         lblErrorEmail = new JLabel();
         
         JLabel lblDate = new JLabel("Fecha de nacimiento *");
@@ -131,10 +141,26 @@ public class RegisterView extends JFrame{
         
         JLabel lblPassword = new JLabel("Contraseña: *");
         txtPassword = new RoundedPasswordField(8);
+        txtPassword.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    controller.onRegister();
+                }
+            }
+        });
         lblErrorPassword = new JLabel();
-        
+
         JLabel lblConfirmPassword = new JLabel("Confirmar contraseña: *");
         txtConfirmPassword = new RoundedPasswordField(8);
+        txtConfirmPassword.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    controller.onRegister();
+                }
+            }
+        });
         lblErrorConfirmPassword = new JLabel();
         
         JButton btnRegister = createButton(

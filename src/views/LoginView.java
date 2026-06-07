@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -99,10 +101,26 @@ public class LoginView extends JFrame{
         
         JLabel lblEmail = new JLabel("Correo: *");
         txtEmail = new RoundedTextField(8);
+        txtEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    controller.onLogin();
+                }
+            }
+        });
         lblErrorEmail = new JLabel();
-        
+
         JLabel lblPassword = new JLabel("Contraseña: *");
         txtPassword = new RoundedPasswordField(8);
+        txtPassword.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    controller.onLogin();
+                }
+            }
+        });
         lblErrorPassword = new JLabel();
         
         // LOGIN BUTTON

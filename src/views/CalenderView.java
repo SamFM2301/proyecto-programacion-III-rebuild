@@ -30,6 +30,7 @@ public class CalenderView extends JPanel {
     private CalenderController controller;
     private HomeView homeView;
     private int userId;
+    private boolean isAdmin;
 
     private JLabel lblDate;
     private JPanel calendarPanel;
@@ -39,9 +40,10 @@ public class CalenderView extends JPanel {
     private Month actualMonth = LocalDate.now().getMonth();
     private int actualYear = LocalDate.now().getYear();
 
-    public CalenderView(CalenderController controller, int userId, HomeView homeView) {
+    public CalenderView(CalenderController controller, int userId, boolean isAdmin, HomeView homeView) {
         this.controller = controller;
         this.userId = userId;
+        this.isAdmin = isAdmin;
         this.homeView = homeView;
         this.repo = new AppointmentRepository();
 
@@ -60,9 +62,16 @@ public class CalenderView extends JPanel {
     }
 
     private void loadAppointmentMap() {
-        List<Appointment> allAppointments = repo.getAppointmentsByUserId(userId);
-        appointmentMap = allAppointments.stream()
-                .collect(Collectors.groupingBy(Appointment::getAppointmentDate));
+        List<Appointment> allAppointments;
+        if (isAdmin) {
+            allAppointments = repo.getAllAppointments();
+            appointmentMap = allAppointments.stream()
+                    .collect(Collectors.groupingBy(Appointment::getAppointmentDate));
+        } else {
+            allAppointments = repo.getAppointmentsByUserId(userId);
+            appointmentMap = allAppointments.stream()
+                    .collect(Collectors.groupingBy(Appointment::getAppointmentDate));
+        }
     }
 
     private JPanel createHeaderPanel() {
@@ -302,14 +311,20 @@ public class CalenderView extends JPanel {
         popup.add(headerPanel, BorderLayout.NORTH);
 
         LocalDate clickedDate = LocalDate.of(actualYear, actualMonth, dayNumber);
-        List<AppointmentDetail> details = repo.getDetailedAppointmentsByUserAndDate(userId, clickedDate);
+        List<AppointmentDetail> details;
+        if (isAdmin) {
+            details = repo.getDetailedAppointmentsByDate(clickedDate);
+        } else {
+            details = repo.getDetailedAppointmentsByUserAndDate(userId, clickedDate);
+        }
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(new Color(18, 21, 33));
 
         if (details.isEmpty()) {
-            JLabel emptyLabel = new JLabel("No tienes citas para este dia");
+            String emptyText = isAdmin ? "No hay citas para este dia" : "No tienes citas para este dia";
+            JLabel emptyLabel = new JLabel(emptyText);
             emptyLabel.setFont(AppFonts.regular(13));
             emptyLabel.setForeground(AppColors.TEXT_SECONDARY);
             emptyLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -349,6 +364,11 @@ public class CalenderView extends JPanel {
 
         String timeRange = detail.getStartTime().toString().substring(0, 5) + " - " + detail.getEndTime().toString().substring(0, 5);
         card.add(createFieldLabel("Hora: ", timeRange));
+
+        if (isAdmin && detail.getClientFullName() != null) {
+            card.add(createFieldLabel("Cliente: ", detail.getClientFullName()));
+        }
+
         card.add(createFieldLabel("Servicio: ", detail.getServiceName()));
         card.add(createFieldLabel("Precio: ", "$" + String.format("%.2f", detail.getServicePrice())));
         card.add(createFieldLabel("Empleado: ", detail.getEmployeeFullName()));

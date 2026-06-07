@@ -13,6 +13,7 @@ public class AppointmentDetail {
     private String serviceName;
     private double servicePrice;
     private String employeeFullName;
+    private String clientFullName;
 
     public AppointmentDetail() {}
 
@@ -86,5 +87,13 @@ public class AppointmentDetail {
 
     public void setEmployeeFullName(String employeeFullName) {
         this.employeeFullName = employeeFullName;
+    }
+
+    public String getClientFullName() {
+        return clientFullName;
+    }
+
+    public void setClientFullName(String clientFullName) {
+        this.clientFullName = clientFullName;
     }
 }
