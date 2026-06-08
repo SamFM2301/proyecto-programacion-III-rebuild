@@ -147,11 +147,15 @@ public class SideMenuView extends JPanel {
         JLabel roleLabel = new JLabel("");
         roleLabel.setForeground(AppColors.WHITE_ALPHA_150);
         roleLabel.setFont(AppFonts.regular(11));
-        
+
         try {
-        	roleLabel.setText(Session.getCurrentUser().getRole());
+            if (Session.getCurrentUser() != null) {
+                roleLabel.setText(Session.getCurrentUser().getRole());
+            } else {
+                roleLabel.setText("");
+            }
         } catch (Exception e) {
-        	System.out.println(e);
+            roleLabel.setText("");
         }
         
         info.add(nameLabel);
@@ -201,9 +205,19 @@ public class SideMenuView extends JPanel {
         }
 
         item.addMouseListener(new MouseAdapter() {
-            @Override public void mouseClicked(MouseEvent e)  { controller.onMenuItemClick(section); }
-            @Override public void mouseEntered(MouseEvent e)  { if (!activeItem.equals(section)) { item.setBackground(AppColors.HOVER_BG); item.repaint(); } }
-            @Override public void mouseExited(MouseEvent e)   { if (!activeItem.equals(section)) { item.setBackground(AppColors.BACKGROUND); item.repaint(); } }
+            @Override public void mouseClicked(MouseEvent e)  { 
+            	controller.onMenuItemClick(section); 
+            }
+            @Override public void mouseEntered(MouseEvent e)  { 
+            	if (!activeItem.equals(section)) { 
+            		item.setBackground(AppColors.HOVER_BG); item.repaint(); 
+            	} 
+            }
+            @Override public void mouseExited(MouseEvent e)   { 
+            	if (!activeItem.equals(section)) { 
+            		item.setBackground(AppColors.BACKGROUND); item.repaint(); 
+            	} 
+            }
         });
 
         URL iconURL = getClass().getClassLoader().getResource(iconPath);

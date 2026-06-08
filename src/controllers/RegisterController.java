@@ -16,13 +16,16 @@ public class RegisterController {
 		this.repository = new RegisterRepository();
 	}
 	
-	public void onRegister() {	
+	public void onRegister() {
+		view.setRegisterButtonEnabled(false);
+
 		if (isValidateFields()) {
 			if (repository.emailExists(view.getEmail())) {
 				view.setErrorEmail("El correo ya está registrado");
+				view.setRegisterButtonEnabled(true);
 				return;
 			}
-			
+
 			User user = new User();
 			user.setFirstName(view.getName());
 			user.setLastName(view.getLastName());
@@ -31,24 +34,27 @@ public class RegisterController {
 			user.setGender(view.getGender());
 			user.setPassword(view.getPassword());
 			user.setRole("USUARIO");
-			
+
 			if (repository.saveUser(user)) {
 				view.resetFields();
 		    	view.resetErrorMsg();
-		    	
+
 		    	JOptionPane.showMessageDialog(
 	                view,
 	                "Usuario registrado exitosamente.",
 	                "Registro",
 	                JOptionPane.INFORMATION_MESSAGE
 	            );
-		    	
+
 		    	new LoginController();
 		    	view.dispose();
 			} else {
 				view.setErrorEmail("Error al registrar usuario");
+				view.setRegisterButtonEnabled(true);
 			}
-	    }
+	    } else {
+			view.setRegisterButtonEnabled(true);
+		}
 	}
 	
 	public void onLogin() {

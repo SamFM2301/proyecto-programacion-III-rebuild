@@ -86,6 +86,7 @@ public class ResultView extends JPanel {
                 g2.dispose();
             }
         };
+        
         iconPanel.setPreferredSize(new Dimension(64, 64));
         iconPanel.setMaximumSize(new Dimension(64, 64));
         iconPanel.setOpaque(false);
@@ -185,6 +186,7 @@ public class ResultView extends JPanel {
                 g2.dispose();
             }
         };
+        
         iconPanel.setPreferredSize(new Dimension(64, 64));
         iconPanel.setMaximumSize(new Dimension(64, 64));
         iconPanel.setOpaque(false);

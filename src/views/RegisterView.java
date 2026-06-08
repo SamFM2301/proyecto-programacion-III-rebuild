@@ -47,6 +47,8 @@ public class RegisterView extends JFrame{
 	private JLabel lblErrorGender;
 	private JLabel lblErrorPassword;
 	private JLabel lblErrorConfirmPassword;
+
+	private JButton btnRegister;
 	
 	public RegisterView(RegisterController controller) {
 		this.controller = controller;
@@ -162,10 +164,10 @@ public class RegisterView extends JFrame{
             }
         });
         lblErrorConfirmPassword = new JLabel();
-        
-        JButton btnRegister = createButton(
-                "Registrarse", 
-                AppColors.YELLOW, 
+
+        btnRegister = createButton(
+                "Registrarse",
+                AppColors.YELLOW,
                 AppColors.TEXT_DARK,
                 15
         );
@@ -458,5 +460,9 @@ public class RegisterView extends JFrame{
 	    lblErrorDate.setText(" ");
 	    lblErrorPassword.setText(" ");
 	    lblErrorConfirmPassword.setText(" ");
+	}
+
+	public void setRegisterButtonEnabled(boolean enabled) {
+	    btnRegister.setEnabled(enabled);
 	}
 }

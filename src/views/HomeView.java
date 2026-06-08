@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URL;
 
 import javax.swing.*;
@@ -34,7 +36,22 @@ public class HomeView extends JFrame {
         Image icon = Toolkit.getDefaultToolkit().getImage(iconURL);
         setIconImage(icon);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(
+                    HomeView.this,
+                    "¿Estás seguro de que deseas salir?",
+                    "Confirmar salida",
+                    JOptionPane.YES_NO_OPTION
+                );
+                if (result == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+
         setMinimumSize(new Dimension(1280, 720));
         setResizable(true);
         setLocationRelativeTo(null);

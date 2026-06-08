@@ -1,6 +1,8 @@
 package views;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
@@ -295,11 +297,17 @@ public class CalenderView extends JPanel {
         closeBtn.setForeground(AppColors.TEXT_LIGHT);
         closeBtn.setFont(AppFonts.bold(14));
         closeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        closeBtn.addActionListener(e -> {
-            layeredPane.remove(popup);
-            layeredPane.revalidate();
-            layeredPane.repaint();
+        closeBtn.addActionListener(e -> closePopup(layeredPane, popup));
+
+        popup.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
+                    closePopup(layeredPane, popup);
+                }
+            }
         });
+        popup.setFocusable(true);
 
         JLabel dateLbl = new JLabel(dateLabel, SwingConstants.CENTER);
         dateLbl.setFont(AppFonts.bold(16));
@@ -346,6 +354,13 @@ public class CalenderView extends JPanel {
         popup.add(scrollPane, BorderLayout.CENTER);
 
         layeredPane.add(popup, JLayeredPane.POPUP_LAYER);
+        layeredPane.revalidate();
+        layeredPane.repaint();
+        popup.requestFocus();
+    }
+
+    private void closePopup(JLayeredPane layeredPane, JPanel popup) {
+        layeredPane.remove(popup);
         layeredPane.revalidate();
         layeredPane.repaint();
     }

@@ -62,6 +62,7 @@ public class LoginView extends JFrame{
         
         add(mainPanel);
         setVisible(true);
+        txtEmail.requestFocus();
 	}
 	
 	private JPanel createLeftPanel(String imagePath) {

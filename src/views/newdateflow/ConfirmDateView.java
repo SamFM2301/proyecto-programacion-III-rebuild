@@ -1,6 +1,7 @@
 package views.newdateflow;
 
 import java.awt.*;
+import java.net.URL;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -69,7 +70,7 @@ public class ConfirmDateView extends JPanel {
         card.add(Box.createVerticalStrut(10));
 
         lblEmployeeValue = new JLabel("-");
-        card.add(createDetailRow(createPersonIcon(), "Barbero", lblEmployeeValue));
+        card.add(createDetailRow(createUserIcon(), "Barbero", lblEmployeeValue));
 
         return card;
     }
@@ -170,54 +171,30 @@ public class ConfirmDateView extends JPanel {
     }
 
     private Icon createCalendarIcon() {
-        return new Icon() {
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(AppColors.TEXT_MUTED);
-                g2.setStroke(new BasicStroke(1.5f));
-                g2.drawRoundRect(x + 1, y + 3, 12, 11, 2, 2);
-                g2.drawLine(x + 3, y + 1, x + 3, y + 5);
-                g2.drawLine(x + 11, y + 1, x + 11, y + 5);
-                g2.drawLine(x + 1, y + 8, x + 14, y + 8);
-                g2.dispose();
-            }
-            @Override public int getIconWidth() { return 15; }
-            @Override public int getIconHeight() { return 15; }
-        };
+        URL iconURL = getClass().getClassLoader().getResource("assets/icons/calendar.png");
+        if (iconURL != null) {
+            Image img = new ImageIcon(iconURL).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+            return new ImageIcon(img);
+        }
+        return new ImageIcon();
     }
 
     private Icon createClockIcon() {
-        return new Icon() {
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(AppColors.TEXT_MUTED);
-                g2.setStroke(new BasicStroke(1.5f));
-                g2.drawOval(x + 1, y + 1, 12, 12);
-                g2.drawLine(x + 7, y + 3, x + 7, y + 8);
-                g2.drawLine(x + 7, y + 8, x + 11, y + 8);
-                g2.dispose();
-            }
-            @Override public int getIconWidth() { return 15; }
-            @Override public int getIconHeight() { return 15; }
-        };
+        URL iconURL = getClass().getClassLoader().getResource("assets/icons/clock.png");
+        if (iconURL != null) {
+            Image img = new ImageIcon(iconURL).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+            return new ImageIcon(img);
+        }
+        return new ImageIcon();
     }
 
-    private Icon createPersonIcon() {
-        return new Icon() {
-            @Override public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(AppColors.TEXT_MUTED);
-                g2.setStroke(new BasicStroke(1.5f));
-                g2.drawOval(x + 4, y + 1, 6, 6);
-                g2.drawArc(x + 1, y + 8, 12, 8, 0, -180);
-                g2.dispose();
-            }
-            @Override public int getIconWidth() { return 15; }
-            @Override public int getIconHeight() { return 15; }
-        };
+    private Icon createUserIcon() {
+        URL iconURL = getClass().getClassLoader().getResource("assets/icons/user.png");
+        if (iconURL != null) {
+            Image img = new ImageIcon(iconURL).getImage().getScaledInstance(16, 16, Image.SCALE_SMOOTH);
+            return new ImageIcon(img);
+        }
+        return new ImageIcon();
     }
 
     public void updateServiceInfo(String name, double price) {

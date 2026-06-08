@@ -251,6 +251,13 @@ public class NewDateController {
     }
 
     public void onDateSelected(int day, int month, int year) {
+        LocalDate selectedDate = LocalDate.of(year, month, day);
+        LocalDate today = LocalDate.now();
+
+        if (selectedDate.isBefore(today)) {
+            return;
+        }
+
         this.selectedDay = day;
         this.selectedMonth = month;
         this.selectedYear = year;
